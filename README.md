@@ -18,7 +18,7 @@ The DAPP has to have the following features:
 
 ## SmartContract
 
-`
+```
 pragma solidity 0.5.12;
 
 contract Increment {
@@ -28,4 +28,22 @@ function incrementVar() public {
 i++;
 incrementer = msg.sender;
 }
-}`
+}
+```
+
+## How to run
+
+1.  Deploy smart contract on any network
+2.  Add the contract address in CONTRACT_ADDRESS object in `CONTRACT_ADDRESS` object with respective to its network Id in [constant](./src/constant.js) file.
+    Network key mapping will be as follows
+    ```
+    "1" = Mainnet
+    "2" = Morden test network
+    "3" = Ropsten test network
+    "4" = Rinkeby test network
+    "42" = Kovan test network
+    ```
+3.  Running development server
+
+    - Setup the dev env by running `npm install`
+    - Start frontend server by running `npm start`
