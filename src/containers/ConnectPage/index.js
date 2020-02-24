@@ -25,8 +25,9 @@ class ConnectPage extends React.Component {
       this.props.connectMetaMaskFunc();
     }
   }
-  componentWillReceiveProps(nextProps) {
-    if (this.props.isMetaMaskConnected !== nextProps.isMetaMaskConnected && nextProps.isMetaMaskConnected) {
+
+  componentDidUpdate(prevProps) {
+    if (this.props.isMetaMaskConnected !== prevProps.isMetaMaskConnected && this.props.isMetaMaskConnected) {
       history.push(ROUTES.HOMEPAGE);
     }
   }
