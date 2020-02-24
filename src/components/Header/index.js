@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { AppBar, Toolbar, Typography, IconButton } from '@material-ui/core';
 import { Home } from '@material-ui/icons';
 import { connect } from "react-redux";
-import { getNetworkName } from '../../utils/web3';
+import { getNetworkName } from '../../utils';
 
 const useStyles = makeStyles(theme => ({
   root: {

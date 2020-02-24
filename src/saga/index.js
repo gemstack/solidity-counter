@@ -2,39 +2,32 @@ import { call, put, takeLatest, fork, take } from "redux-saga/effects";
 import { eventChannel } from 'redux-saga';
 import { CONTRACT_ADDRESS } from './../constant';
 import {
-  META_MASK_CONNECT_REQUEST,
-  CONTRACT_DATA_REQUEST,
-  CONTRACT_INC_REQUEST
-} from "./../action/constant";
-import {
+  connectMetaMaskRequest,
   connectMetaMaskSuccess,
   connectMetaMaskFailure,
   getContractDataRequest,
   getContractDataSuccess,
   getContractDataFailure,
+  incCountRequest,
   incCountSuccess,
   incCountFailure
-} from './../action';
-import {
-  connectToMetaMask,
-  getContractData,
-  incrementVar,
-  onAccountChanged
-} from "../utils/web3";
+} from './../reducer';
+import { getContractData, incrementVar } from "../services/contract";
+import connectToMetaMask, { onAccountChanged } from '../services/connectToMetamask';
 
 function* connect() {
   try {
     const data = yield call(connectToMetaMask);
     if (data && data.address && data.network) {
-      yield put(connectMetaMaskSuccess(data));
-      yield put(getContractDataRequest(data));
+      yield put({ type: connectMetaMaskSuccess.type, payload: { ...data } });
+      yield put({ type: getContractDataRequest.type, payload: { ...data } });
       // event to check address change
       yield fork(watchAccountChange);
     } else {
-      yield put(connectMetaMaskFailure('No data found'));
+      yield put({ type: connectMetaMaskFailure.type, payload: 'No data found' });
     }
   } catch (e) {
-    yield put(connectMetaMaskFailure(e.message));
+    yield put({ type: connectMetaMaskFailure.type, payload: e.message });
     console.log(e);
   }
 }
@@ -46,10 +39,10 @@ function* fetchContractData(action) {
     if (!contractAddress) throw new Error('Contract address not available.');
     const data = yield call(getContractData, contractAddress);
     if (data) {
-      yield put(getContractDataSuccess(data));
+      yield put({ type: getContractDataSuccess.type, payload: { ...data } });
     }
   } catch (e) {
-    yield put(getContractDataFailure(e.message));
+    yield put({ type: getContractDataFailure.type, payload: e.message });
     console.log(e);
   }
 }
@@ -63,9 +56,9 @@ function* incrementCount(action) {
     let count = parseInt(localStorage.getItem(action.payload) || 0);
     yield call(fetchContractData, action)
     localStorage.setItem(action.payload, ++count);
-    yield put(incCountSuccess(data));
+    yield put({ type: incCountSuccess.type, payload: { ...data } });
   } catch (e) {
-    yield put(incCountFailure(e.message));
+    yield put({ type: incCountFailure.type, payload: e.message });
     console.log(e);
   }
 }
@@ -84,18 +77,18 @@ export function* watchAccountChange() {
   while (true) {
     try {
       const payload = yield take(channel)
-      yield put(connectMetaMaskSuccess(payload));
+      yield put({ type: connectMetaMaskSuccess.type, payload });
     } catch (e) {
       console.error('AccountChange error:', e)
-      yield put(connectMetaMaskFailure(e.message));
+      yield put({ type: connectMetaMaskFailure.type, payload: e.message });
     }
   }
 }
 
 function* mySaga() {
-  yield takeLatest(META_MASK_CONNECT_REQUEST, connect);
-  yield takeLatest(CONTRACT_DATA_REQUEST, fetchContractData);
-  yield takeLatest(CONTRACT_INC_REQUEST, incrementCount);
+  yield takeLatest(connectMetaMaskRequest.type, connect);
+  yield takeLatest(getContractDataRequest.type, fetchContractData);
+  yield takeLatest(incCountRequest.type, incrementCount);
 }
 
 export default mySaga;

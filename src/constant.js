@@ -43,3 +43,8 @@ export const ABI = [
     "type": "function"
   }
 ]
+
+export const ROUTES = {
+  HOMEPAGE: '/',
+  ERROR_PAGE: '/error',
+};
