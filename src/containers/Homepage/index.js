@@ -2,9 +2,16 @@ import React from 'react';
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { Button, Card, CardHeader, CardContent, CardActions, Grid } from '@material-ui/core';
+import {
+  Button,
+  Card,
+  CardHeader,
+  CardContent,
+  CardActions,
+  Grid
+} from '@material-ui/core';
 import Alert from '../../components/Alert';
-import { incCountRequest } from '../../reducer';
+import { incCountRequest } from './reducer';
 import SmartContractData from '../../components/SmartContractData';
 
 const styles = () => ({
@@ -106,14 +113,13 @@ Homepage.propTypes = {
 };
 
 const mapStateToProps = state => {
+  const { address, network } = state.metaMask;
   const {
     smartContractData,
-    address,
-    network,
     incCountReqError,
     incCountReqLoading,
     contractFetchError
-  } = state;
+  } = state.homePage;
   const {
     totalCount,
     lastIncrementor,

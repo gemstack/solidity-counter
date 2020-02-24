@@ -46,5 +46,5 @@ export const ABI = [
 
 export const ROUTES = {
   HOMEPAGE: '/',
-  ERROR_PAGE: '/error',
+  CONNECT_PAGE: '/connect',
 };

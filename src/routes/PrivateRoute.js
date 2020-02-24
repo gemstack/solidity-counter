@@ -13,7 +13,7 @@ function PrivateRoute({ component: Component, isMetaMaskConnected, ...rest }) {
         ) : (
             <Redirect
               to={{
-                pathname: ROUTES.ERROR_PAGE,
+                pathname: ROUTES.CONNECT_PAGE,
                 state: { from: props.location }
               }}
             />
@@ -25,7 +25,7 @@ function PrivateRoute({ component: Component, isMetaMaskConnected, ...rest }) {
 
 const mapStateToProps = state => {
   return {
-    isMetaMaskConnected: state.isMetaMaskConnected,
+    isMetaMaskConnected: state.metaMask.isMetaMaskConnected,
   };
 };
 export default connect(mapStateToProps)(PrivateRoute);

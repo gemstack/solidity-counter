@@ -61,7 +61,7 @@ Header.propTypes = {
 };
 
 const mapStateToProps = state => {
-  const { address, network } = state;
+  const { address, network } = state.metaMask;
   return {
     address,
     network,
