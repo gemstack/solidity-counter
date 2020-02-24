@@ -59,7 +59,7 @@ function Homepage(props) {
           {contractFetchError ? (
             <CardContent>
               <Alert
-                type="info"
+                type="error"
                 message={contractFetchError}
               />
             </CardContent>
